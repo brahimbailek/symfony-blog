@@ -36,6 +36,7 @@ class AppFixtures extends Fixture
             $users[] = $user;
         }
 
+        
         for ($i = 0; $i < 15; $i++) {
             $categorie = new Category();
             $categorie->setTitle($faker->text(50))->setDescription($faker->text(250))->setImage($faker->imageUrl());
@@ -52,18 +53,18 @@ class AppFixtures extends Fixture
                 ->setImage($faker->imageUrl())
                 ->setCreatedAt(new \DateTime)
 
-                ->addCategory($categories[$faker->numberBetween(0, 14)])
-                //                               $categories [  12   ]   ==> objet de type categ
+                ->addCategory(   $categories[  $faker->numberBetween(0, 14)  ]   )
+//                               $categories [  12   ]   ==> objet de type categ
 
-                ->setAuthor($users[$faker->numberBetween(0, 49)]);
+                ->setAuthor(    $users [  $faker->numberBetween(0, 49)  ]    );
 
             $manager->persist($article);
 
-            //  $categories :        [   0 : new Category(),     1 : new Category(),  2 :  new Category(),   ...    14: new Category()    ]
+              //  $categories :        [   0 : new Category(),     1 : new Category(),  2 :  new Category(),   ...    14: new Category()    ]
             //   $users  [ 0 : new user(), 1 : new user(), 2 : new user, ....  49: new user]
         }
 
-
+        
         $manager->flush();
     }
 }

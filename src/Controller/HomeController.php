@@ -2,22 +2,51 @@
 
 namespace App\Controller;
 
+use App\Entity\Article;
 use App\Repository\ArticleRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class HomeController extends AbstractController
-{
-    /**
-     * @Route("/home", name="home")
-     */
-    public function index(ArticleRepository $repoArticle): Response
-    {
-        $articles=$repoArticle->findAll();
+{   
 
-        return $this->render('home/index.html.twig', [
-            'articles' => $articles
+    private $repoArticle;
+
+    public function __construct(ArticleRepository $repoArticle){
+        $this->repoArticle = $repoArticle;
+    }
+
+    /**
+     * @Route("/", name="home")
+     */
+    public function index(): Response
+    {
+        $articles= $this->repoArticle->findAll();
+
+        return $this->render('home/index.html.twig',[
+            "articles"=>$articles
         ]);
     }
+
+    /**
+     * @Route("/show/{id}", name="show")
+     */
+    public function show($id): Response
+    {
+        $article = $this->repoArticle->find($id);
+
+        if (!$article) {
+            return $this->redirectToRoute('home');
+        }
+
+        return $this->render('home/show.html.twig', [
+            "article" => $article
+        ]);
+    }
+
+
+   
+
+    
 }

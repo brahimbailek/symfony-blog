@@ -40,15 +40,15 @@ class Article
     private $createdAt;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Category::class, inversedBy="articles")
-     */
-    private $category;
-
-    /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="articles")
      * @ORM\JoinColumn(nullable=false)
      */
     private $author;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Category::class, inversedBy="articles")
+     */
+    private $category;
 
     public function __construct()
     {
@@ -108,6 +108,18 @@ class Article
         return $this;
     }
 
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): self
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+
     /**
      * @return Collection|Category[]
      */
@@ -128,18 +140,6 @@ class Article
     public function removeCategory(Category $category): self
     {
         $this->category->removeElement($category);
-
-        return $this;
-    }
-
-    public function getAuthor(): ?User
-    {
-        return $this->author;
-    }
-
-    public function setAuthor(?User $author): self
-    {
-        $this->author = $author;
 
         return $this;
     }
